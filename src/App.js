@@ -81,66 +81,72 @@ function App() {
 
   return (
     <div className="container mx-auto">
-      <h3 className='text-center text-3xl font-bold'>Shopping Cart</h3>
+      <h3 className='text-center text-3xl font-bold mt-8'>Shopping Cart</h3>
 
-      <div className='mt-8'>
+      <div className='mt-10'>
         <h4 className='text-2xl font-bold'>Products</h4>
-        <div className='grid grid-cols-4 gap-8'>
+        <div className='grid grid-cols-4 gap-8 mt-4'>
           {PRODUCTS.map((product) => {
-            return <div className='col-auto shadow-md p-4' key={product.id}>
+            return <div className='col-span-4 sm:col-span-1  shadow-md p-4 rounded-md' key={product.id}>
               <h3 className='font-bold'>{product.name}</h3>
-              <span>{product.price}</span>
-              <button onClick={() => addToCart(product)} className='block w-full bg-blue-700 text-white p-2 rounded-sm mt-2'>Add to Cart</button>
+              <span>₹{product.price}</span>
+              <button onClick={() => addToCart(product)} className='block w-full bg-[#155dfc] text-white p-2 rounded-md mt-2'>Add to Cart</button>
             </div>
           })}
         </div>
       </div>
 
       <div className="mt-8">
-        <h4 className='text-2xl font-bold mt-4'>Cart Summary</h4>
-        <div className='col-auto shadow-md p-4 border-b-2 flex justify-between font-bold'>
-          <div>
-            Subtotal:
+        <h4 className='text-2xl font-bold'>Cart Summary</h4>
+        <div className='shadow-md p-4 mt-4 rounded-md pb-8'>
+          <div className='col-auto border-b-2 pb-4 border-gray-400 flex justify-between font-bold'>
+            <div>
+              Subtotal:
+            </div>
+            <div>
+              ₹{total}
+            </div>
           </div>
-          <div>
-            0
-          </div>
-        </div>
 
-        <div className='progress-container'>
-          <div className='progress-bar'>
-            <div className='progress' style={{ width: `${progress}%` }}></div>
+
+          <div className='progress-container mt-8 p-2'>
+            <p className='font-bold'>
+              {getSubtotal >= THRESHOLD ?
+                "You got a free Wireless Mouse" :
+                `Add ${remaining} more to get a FREE Wireless Mouse!`
+              }
+            </p>
+            {getSubtotal < THRESHOLD && <div className='progress-bar mt-2'>
+              <div className='progress' style={{ width: `${progress}%` }}></div>
+            </div>}
+            
           </div>
-          <p>
-            {getSubtotal >= THRESHOLD ?
-              "You've unlocked the free gift!" :
-              `Add ${remaining} more to unclock free gift`
-            }
-          </p>
         </div>
       </div>
 
       {showGiftMsg && <div className='mt-4 text-green-400'>Free gift added</div>}
 
 
-      {cart.length == 0 ? <p>Your cart is empty</p> : <div className="mt-8">
-        <h4 className='text-2xl font-bold mt-4'>Cart Items</h4>
+      {cart.length == 0 ? <div className='shadow-md p-4 rounded-md mt-8 text-center text-gray-400'>
+        <p>Your cart is empty</p>
+        <p className='mt-2 text-sm'>Add some products to see here!</p>
+      </div> : <div className="mt-8">
+        <h4 className='text-2xl font-bold my-4'>Cart Items</h4>
         {cart.map((item) => (
-          <div className='col-auto shadow-md p-4 border-b-2 flex justify-between font-bold items-center gap-2' key={item.id}>
+          <div className='col-auto shadow-md p-4 border-b-2 flex justify-between items-center gap-2 rounded-md' key={item.id}>
             <div>
-              <p>{item.name}</p>
-              <p>{item.price}</p>
+              <p className='font-bold'>{item.name}</p>
+              <p className='text-gray-500'>₹{item.price} × {item.quantity} = ₹{item.price * item.quantity}</p>
             </div>
-            {item.id !== FREE_GIFT.id ? <div className='flex gap-2'>
-              <button className='p-1 bg-red-500 text-white w-9 h-9' onClick={() => item.quantity === 1 ? removeFromCart(item.id) : updateCartQty(item.id, -1)}>-</button>
+            {item.id !== FREE_GIFT.id ? <div className='flex gap-2 items-center'>
+              <button className='p-1 rounded-md bg-red-500 text-white w-8 h-8' onClick={() => item.quantity === 1 ? removeFromCart(item.id) : updateCartQty(item.id, -1)}>-</button>
               <span>{item.quantity}</span>
-              <button className='p-1 bg-green-500 text-white w-9 h-9' onClick={() => updateCartQty(item.id, 1)}>+</button>
-            </div> : "Free"}
+              <button className='p-1 rounded-md bg-green-500 text-white w-8 h-8' onClick={() => updateCartQty(item.id, 1)}>+</button>
+            </div> : <div className='bg-[#dcfce6] text-green-700 text-xs py-1 px-2 font-bold'>FREE GIFT</div>}
           </div>
         ))}
       </div>}
 
-      <h3 className='text-right mt-4 font-bold'>Total: {total}</h3>
     </div>
   );
 }
