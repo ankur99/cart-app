@@ -89,7 +89,7 @@ function App() {
           {PRODUCTS.map((product) => {
             return <div className='col-span-4 sm:col-span-1  shadow-md p-4 rounded-md' key={product.id}>
               <h3 className='font-bold'>{product.name}</h3>
-              <span>₹{product.price}</span>
+              <span className='text-sm font-bold'>₹{product.price}</span>
               <button onClick={() => addToCart(product)} className='block w-full bg-[#155dfc] text-white p-2 rounded-md mt-2'>Add to Cart</button>
             </div>
           })}
@@ -136,7 +136,7 @@ function App() {
           <div className='col-auto shadow-md p-4 border-b-2 flex justify-between items-center gap-2 rounded-md' key={item.id}>
             <div>
               <p className='font-bold'>{item.name}</p>
-              <p className='text-gray-500'>₹{item.price} × {item.quantity} = ₹{item.price * item.quantity}</p>
+              <p className='text-gray-500 text-sm'>₹{item.price} × {item.quantity} = ₹{item.price * item.quantity}</p>
             </div>
             {item.id !== FREE_GIFT.id ? <div className='flex gap-2 items-center'>
               <button className='p-1 rounded-md bg-red-500 text-white w-8 h-8' onClick={() => item.quantity === 1 ? removeFromCart(item.id) : updateCartQty(item.id, -1)}>-</button>
